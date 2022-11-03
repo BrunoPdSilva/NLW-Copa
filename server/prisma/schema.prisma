@@ -2,7 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Gera a tabela ERD
 generator erd {
   provider = "prisma-erd-generator"
 }
@@ -20,8 +19,7 @@ model Pool {
   ownerId   String?
 
   participants Participant[]
-
-  owner User? @relation(fields: [ownerId], references: [id])
+  owner        User?         @relation(fields: [ownerId], references: [id])
 }
 
 model Participant {
@@ -40,6 +38,7 @@ model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
+  googleId  String?  @unique
   avatarUrl String?
   createdAt DateTime @default(now())
 
@@ -63,9 +62,11 @@ model Guess {
   firstTeamPoints  Int
   secondTeamPoints Int
   createdAt        DateTime @default(now())
-  participantId    String
   gameId           String
+  participantId    String
 
   participant Participant @relation(fields: [participantId], references: [id])
   game        Game        @relation(fields: [gameId], references: [id])
+
+  @@unique([participantId, gameId])
 }
