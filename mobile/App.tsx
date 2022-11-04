@@ -1,7 +1,7 @@
 import { NativeBaseProvider, StatusBar} from "native-base";
 
 // Components
-import { Signin } from "./src/screens/Signin";
+import { Routes } from "./src/routes";
 import { Loading } from "./src/components/Loading";
 
 // Styles
@@ -17,7 +17,7 @@ export default function App() {
       <AuthContextProvider>
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
-        {fontsLoaded ? <Signin /> : <Loading />}
+        {fontsLoaded ? <Routes /> : <Loading />}
       </AuthContextProvider>
     </NativeBaseProvider>
   );
