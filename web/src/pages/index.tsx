@@ -1,11 +1,14 @@
 
-import Image from "next/image";
-import logoImg from "../assets/logo.svg";
+import { FormEvent, useState } from "react";
+import { api } from "../lib/axios";
+
 import usersAvatarExampleImg from "../assets/users-avatar-example.png";
 import appPreviewImg from "../assets/app-nlwCopa-preview.png";
 import iconCheckImg from "../assets/icon-check.svg";
-import { api } from "../lib/axios";
-import { FormEvent, useState } from "react";
+import logoImg from "../assets/logo.svg";
+
+// Components
+import Image from "next/image";
 
 interface HomeProps {
  poolCount: number,
