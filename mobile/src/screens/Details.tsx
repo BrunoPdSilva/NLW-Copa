@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { VStack, useToast, HStack } from "native-base";
 import { useRoute } from "@react-navigation/native";
+import { Share } from "react-native";
 
 import { api } from "../services/api";
 
 import { Header } from "../components/Header";
 import { Loading } from "../components/Loading";
+import { Guesses } from "../components/Guesses";
 import { PoolCardProps } from "../components/PoolCard";
 import { PoolHeader } from "../components/PoolHeader";
 import { EmptyMyPoolList } from "../components/EmptyMyPoolList";
@@ -16,7 +18,9 @@ interface RouteParams {
 }
 
 export function Details() {
-  const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking">("guesses");
+  const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking">(
+    "guesses"
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [poolDetails, setPoolDetails] = useState<PoolCardProps>(
     {} as PoolCardProps
@@ -45,6 +49,12 @@ export function Details() {
     }
   }
 
+  async function handleCodeShare() {
+    await Share.share({
+      message: poolDetails.code,
+    });
+  }
+
   useEffect(() => {
     fetchPoolDetails();
   }, [id]);
@@ -55,7 +65,12 @@ export function Details() {
 
   return (
     <VStack flex={1} bgColor="gray.900">
-      <Header title={id} showBackButton showShareButton />
+      <Header
+        title={poolDetails.title}
+        onShare={handleCodeShare}
+        showBackButton
+        showShareButton
+      />
 
       {poolDetails._count?.participants > 0 ? (
         <VStack px={5} flex={1}>
@@ -73,6 +88,8 @@ export function Details() {
               onPress={() => setOptionSelected("ranking")}
             />
           </HStack>
+
+          <Guesses poolId={poolDetails.id} code={poolDetails.code} />
         </VStack>
       ) : (
         <EmptyMyPoolList code={poolDetails.code} />
